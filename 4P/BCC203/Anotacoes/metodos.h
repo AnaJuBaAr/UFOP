@@ -5,9 +5,7 @@
 
 typedef struct{
     int chave;
-    long dado1;
-    char dado2[1000];
-    char dado3[5000];
+    char titulo[31];
 } Registro;
 
 int AcessoSequencialIndexado(int indice[], int tamanho, Registro *item, FILE *arq);
