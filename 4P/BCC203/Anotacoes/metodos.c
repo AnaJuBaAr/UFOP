@@ -6,90 +6,90 @@
 #define TAMPAGINA 10
 
 // PESQUISA POR ACESSO SEQUENCIAL INDEXADO
-int pesquisaASI(int indice[], int tamanho, Registro *item, FILE *arq){
-    // procura a página onde o item pode se encontrar
-    int i = 0;
-    while(i < tamanho && indice[i] <= item->chave){
-        i++;
-    }
+// int pesquisa(int indice[], int tamanho, Registro *item, FILE *arq){
+//     // procura a página onde o item pode se encontrar
+//     int i = 0;
+//     while(i < tamanho && indice[i] <= item->chave){
+//         i++;
+//     }
 
-    //se a chave procurada for menor que a primeira chave, o item não existe no arquivo
-    if(i == 0){
-        return 0;
-    }
+//     //se a chave procurada for menor que a primeira chave, o item não existe no arquivo
+//     if(i == 0){
+//         return 0;
+//     }
 
-    //a ultima pagina pode ser menor que as anteriores
-    int quantItens;
-    if(i < tamanho){ //a unica pagina que pode ser menor eh a ultima
-        quantItens = TAMPAGINA;
-    } else{
-        fseek(arq, 0, SEEK_END);
-        quantItens = (ftell(arq) / sizeof(Registro)) % TAMPAGINA;
+//     //a ultima pagina pode ser menor que as anteriores
+//     int quantItens;
+//     if(i < tamanho){ //a unica pagina que pode ser menor eh a ultima
+//         quantItens = TAMPAGINA;
+//     } else{
+//         fseek(arq, 0, SEEK_END);
+//         quantItens = (ftell(arq) / sizeof(Registro)) % TAMPAGINA;
 
-        if(quantItens == 0){ //se a ultima pagina for do mesmo tamanho das anteriores
-            quantItens = TAMPAGINA;
-        }
-    }
+//         if(quantItens == 0){ //se a ultima pagina for do mesmo tamanho das anteriores
+//             quantItens = TAMPAGINA;
+//         }
+//     }
 
-    //lê a página desejada do arquivo
-    Registro pagina[TAMPAGINA];
-    int desloc = (i-1) * TAMPAGINA * sizeof(Registro);
-    fseek(arq, desloc, SEEK_SET);
-    fread(pagina, sizeof(Registro), quantItens, arq);
+//     //lê a página desejada do arquivo
+//     Registro pagina[TAMPAGINA];
+//     int desloc = (i-1) * TAMPAGINA * sizeof(Registro);
+//     fseek(arq, desloc, SEEK_SET);
+//     fread(pagina, sizeof(Registro), quantItens, arq);
 
-    //pesquisa binária na página lida
-    int esq = 0;
-    int dir = quantItens-1;
-    int meio;
+//     //pesquisa binária na página lida
+//     int esq = 0;
+//     int dir = quantItens-1;
+//     int meio;
 
-    while(esq <= dir){
-        meio = (esq + dir) / 2;
-        if(pagina[meio].chave == item->chave){
-            *item = pagina[meio];
-            return 1;
-        } else if(pagina[meio].chave < item->chave){
-            esq = meio + 1;
-        } else{
-            dir = meio - 1;
-        }
-    }
+//     while(esq <= dir){
+//         meio = (esq + dir) / 2;
+//         if(pagina[meio].chave == item->chave){
+//             *item = pagina[meio];
+//             return 1;
+//         } else if(pagina[meio].chave < item->chave){
+//             esq = meio + 1;
+//         } else{
+//             dir = meio - 1;
+//         }
+//     }
 
-    return 0;
-}
+//     return 0;
+// }
 
-int *Paginacao(FILE *arq){
-    //estima a quantidade de páginas possíveis dado um tamanho fixo
-    fseek(arq, 0, SEEK_END);
-    int tamFinal = ftell(arq)/sizeof(Registro);
-    int quantPaginas = (tamFinal + TAMPAGINA - 1) / TAMPAGINA;
+// int *Paginacao(FILE *arq){
+//     //estima a quantidade de páginas possíveis dado um tamanho fixo
+//     fseek(arq, 0, SEEK_END);
+//     int tamFinal = ftell(arq)/sizeof(Registro);
+//     int quantPaginas = (tamFinal + TAMPAGINA - 1) / TAMPAGINA;
 
-    //cria um vetor para o indice das paginas
-    int *indice = (int*)malloc(quantPaginas * sizeof(int));
-    if(indice == NULL){
-        return NULL;
-    }
+//     //cria um vetor para o indice das paginas
+//     int *indice = (int*)malloc(quantPaginas * sizeof(int));
+//     if(indice == NULL){
+//         return NULL;
+//     }
 
-    int i = 0;
+//     int i = 0;
 
-    //preenche o vetor indice com a chave do primeiro registro de cada pagina
-    rewind(arq);
-    Registro pagina[TAMPAGINA];
-    size_t bytesLidos;
+//     //preenche o vetor indice com a chave do primeiro registro de cada pagina
+//     rewind(arq);
+//     Registro pagina[TAMPAGINA];
+//     size_t bytesLidos;
 
-    while((bytesLidos = fread(pagina, sizeof(Registro), TAMPAGINA, arq)) > 0 && i < quantPaginas){
-        indice[i++] = pagina[0].chave;
-    }
+//     while((bytesLidos = fread(pagina, sizeof(Registro), TAMPAGINA, arq)) > 0 && i < quantPaginas){
+//         indice[i++] = pagina[0].chave;
+//     }
 
-    //retorna o indice criado
-    return indice;
-}
+//     //retorna o indice criado
+//     return indice;
+// }
 
 // PESQUISA POR ÁRVORE B
 Ponteiro inicializa(){
     return NULL;
 }
 
-void pesquisaAB(Registro *registro, Ponteiro ponteiro){
+void pesquisa(Registro *registro, Ponteiro ponteiro){
     if(ponteiro == NULL){
         printf("Registro não está na árvore\n");
         return;
@@ -107,9 +107,9 @@ void pesquisaAB(Registro *registro, Ponteiro ponteiro){
 
     //confere para qual dos ramos a função deve descer
     if(registro->chave < ponteiro->registros[i-1].chave){
-        pesquisaAB(registro, ponteiro->ponteiros[i-1]);
+        pesquisa(registro, ponteiro->ponteiros[i-1]);
     } else{
-        pesquisaAB(registro, ponteiro->ponteiros[i]);
+        pesquisa(registro, ponteiro->ponteiros[i]);
     }
 }
 
@@ -235,39 +235,77 @@ void insereArq(Ponteiro *ponteiro){
 
 void reconstitui(Ponteiro ponteiroPagina, Ponteiro ponteiroPai, int posicaoPai, short *diminuiu){
     Pagina *auxiliar;
-    long dispAux, j;
+    long disAuxiliar, j;
 
     if(posicaoPai < ponteiroPai->quant){
+        auxiliar = ponteiroPai->ponteiros[posicaoPai+1];
+        disAuxiliar = (auxiliar->quant-M+1)/2;
         ponteiroPagina->registros[ponteiroPagina->quant] = ponteiroPai->registros[posicaoPai];
         ponteiroPagina->ponteiros[ponteiroPagina->quant+1] = auxiliar->ponteiros[0];
         ponteiroPagina->quant++;
-    }
-    if(dispAux > 0){
-        for(j = 1; j < dispAux; j++){
-            insereNaPagina(ponteiroPagina, auxiliar->registros[j-1], auxiliar->ponteiros[j]);
-        }
-        ponteiroPai->registros[posicaoPai] = auxiliar->registros[dispAux-1];
-        auxiliar->quant -= dispAux;
 
-        for(j = 0; j < auxiliar->quant; j++){
-            auxiliar->registros[j] = auxiliar->registros[j+dispAux];
-        }
-        for(j = 0; j <= auxiliar->quant; j++){
-            auxiliar->ponteiros[j] = auxiliar->ponteiros[j+dispAux];
-        }
-        *diminuiu = 0;
-    } else{
-        for(j = 1; j <= M; j++){
-            insereNaPagina(ponteiroPagina, auxiliar->registros[j-1], auxiliar->ponteiros[j]);
-        }
-        free(auxiliar);
-        for(j = posicaoPai+1; j < ponteiroPai->quant; j++){
-            ponteiroPai->registros[j-1] = ponteiroPai->registros[j];
-            ponteiroPai->ponteiros[j] = ponteiroPai->ponteiros[j+1];
-        }
-        ponteiroPai->quant++;
-        if(ponteiroPai->quant >= M){
+        if(disAuxiliar > 0){
+            for(j = 1; j < disAuxiliar; j++){
+                insereNaPagina(ponteiroPagina, auxiliar->registros[j-1], auxiliar->ponteiros[j]);
+            }
+
+            ponteiroPai->registros[posicaoPai] = auxiliar->registros[disAuxiliar-1];
+            auxiliar->quant -= disAuxiliar;
+
+            for(j = 0; j < auxiliar->quant; j++){
+                auxiliar->registros[j] = auxiliar->registros[j+disAuxiliar];
+            }
+            for(j = 0; j <= auxiliar->quant; j++){
+                auxiliar->ponteiros[j] = auxiliar->ponteiros[j+disAuxiliar];
+            }
             *diminuiu = 0;
+        } else{
+            for(j = 1; j <= M; j++){
+                insereNaPagina(ponteiroPagina, auxiliar->registros[j-1], auxiliar->ponteiros[j]);
+            }
+            free(auxiliar);
+            for(j = posicaoPai+1; j < ponteiroPai->quant; j++){
+                ponteiroPai->registros[j-1] = ponteiroPai->registros[j];
+                ponteiroPai->ponteiros[j] = ponteiroPai->ponteiros[j+1];
+            }
+            ponteiroPai->quant--;
+
+            if(ponteiroPai->quant >= M){
+                *diminuiu = 0;
+            }
+        }
+    } else{
+        auxiliar = ponteiroPai->ponteiros[posicaoPai-1];
+        disAuxiliar = (auxiliar->quant-M+1)/2;
+
+        for(j = ponteiroPagina->quant; j >= 1; j--){
+            ponteiroPagina->registros[j] = ponteiroPagina->registros[j-1];
+            ponteiroPagina->registros[0] = ponteiroPai->registros[posicaoPai-1];
+        }
+        for(j = ponteiroPagina->quant; j >= 0; j--){
+            ponteiroPagina->ponteiros[j+1] = ponteiroPagina->ponteiros[j];
+            ponteiroPagina->quant++;
+        }
+
+        if(disAuxiliar > 0){
+            for(j = 1; j < disAuxiliar; j++){
+                insereNaPagina(ponteiroPagina, auxiliar->registros[auxiliar->quant-j], auxiliar->ponteiros[auxiliar->quant-j+1]);
+            }
+            ponteiroPagina->ponteiros[0] = auxiliar->ponteiros[auxiliar->quant - disAuxiliar+1];
+            ponteiroPai->registros[posicaoPai-1] = auxiliar->registros[auxiliar->quant - disAuxiliar];
+            auxiliar->quant -= disAuxiliar;
+            *diminuiu = 0;
+        } else{
+            for(j = 1; j <= M; j++){
+                insereNaPagina(auxiliar, ponteiroPagina->registros[j-1], ponteiroPagina->ponteiros[j]);
+            }
+
+            free(ponteiroPagina);
+            ponteiroPai->quant--;
+
+            if(ponteiroPai->quant >= M){
+                *diminuiu = 0;
+            }
         }
     }
 }
@@ -275,24 +313,74 @@ void reconstitui(Ponteiro ponteiroPagina, Ponteiro ponteiroPai, int posicaoPai, 
 void antecessor(Ponteiro ponteiro, int ind, Ponteiro ponteiroPai, short *diminuiu){
     if(ponteiroPai->ponteiros[ponteiroPai->quant] != NULL){
         antecessor(ponteiro, ind, ponteiroPai->ponteiros[ponteiroPai->quant], diminuiu);
+
         if(*diminuiu){
             reconstitui(ponteiroPai->ponteiros[ponteiroPai->quant], ponteiroPai, (long)ponteiroPai->quant, diminuiu);
         }
         return;
     }
+
     ponteiro->registros[ind-1] = ponteiroPai->registros[ponteiroPai->quant-1];
     ponteiroPai->quant--;
     *diminuiu = (ponteiroPai->quant < M);
 }
 
 void ret(int chave, Ponteiro *ponteiro, short *diminuiu){
-    long j;
-    int ind = 1;
-    Ponteiro pag;
-    if(ponteiro == NULL){
-        printf("Registro não está na árvore\n");
-        *diminuiu = 0;
+    long j, ind = 1;
+    Ponteiro pagina;
+
+    if(*ponteiro == NULL){
+        printf("ERRO: registro nao esta na arvore\n");
         return;
+    }
+
+    pagina = *ponteiro;
+    while(ind < pagina->quant && chave > pagina->registros[ind-1].chave){
+        ind++;
+    }
+
+    if(chave == pagina->registros[ind-1].chave){
+        if(pagina->ponteiros[ind-1] == NULL){
+            pagina->quant--;
+            *diminuiu = (pagina->quant < M);
+
+            for(j = ind; j <= pagina->quant; j++){
+                pagina->registros[j-1] = pagina->registros[j];
+                pagina->ponteiros[j] = pagina->ponteiros[j+1];
+            }
+            return;
+        }
+
+        antecessor(*ponteiro, ind, pagina->ponteiros[ind-1], diminuiu);
+        
+        if(*diminuiu){
+            reconstitui(pagina->ponteiros[ind-1], *ponteiro, ind-1, diminuiu);
+        }
+
+        return;
+    }
+
+    if(chave > pagina->registros[ind-1].chave){
+        ind++;
+    }
+
+    ret(chave, &pagina->ponteiros[ind-1], diminuiu);
+
+    if(*diminuiu){
+        reconstitui(pagina->ponteiros[ind-1], *ponteiro, ind-1, diminuiu);
+    }
+}
+
+void retira(int chave, Ponteiro *ponteiro){
+    short diminuiu;
+    Ponteiro auxiliar;
+
+    ret(chave, ponteiro, &diminuiu);
+
+    if(diminuiu && (*ponteiro)->quant == 0){
+        auxiliar = *ponteiro;
+        *ponteiro = auxiliar->ponteiros[0];
+        free(auxiliar);
     }
 }
 

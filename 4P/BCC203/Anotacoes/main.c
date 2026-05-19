@@ -27,7 +27,12 @@ int main(){
 
     imprime(arvore);
 
-    //pesquisaAB(&registro, arvore->ponteiros[0]);
+
+    pesquisa(&registro, arvore);
+
+    retira(80, &arvore);
+
+    imprime(arvore);
     
     liberararvore(arvore);
 

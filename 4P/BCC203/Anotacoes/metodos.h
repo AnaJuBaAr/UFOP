@@ -21,12 +21,12 @@ typedef struct Pagina{
 } Pagina;
 
 // ACESSO SEQUENCIAL INDEXADO
-int pesquisaASI(int indice[], int tamanho, Registro *item, FILE *arq);
-int *Paginacao(FILE *arq);
+// int pesquisa(int indice[], int tamanho, Registro *item, FILE *arq);
+// int *Paginacao(FILE *arq);
 
 // ARVORE B
 Ponteiro inicializa();
-void pesquisaAB(Registro *registro, Ponteiro ponteiro);
+void pesquisa(Registro *registro, Ponteiro ponteiro);
 void imprime(Ponteiro arvore);
 void insereNaPagina(Ponteiro ponteiro, Registro registro, Ponteiro ponteiroDir);
 void ins(Registro registro, Ponteiro ponteiro, short *cresceu, Registro *registroRetorno, Ponteiro *ponteiroRetorno);
