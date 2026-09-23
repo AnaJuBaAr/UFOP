@@ -128,15 +128,46 @@ int division(Cpu *cpu, Ram *ram, int dividend, int divisor){
     ram = createEmptyRam(4);
     cpu = createCpu();
 
-    setValue(cpu, ram, 0, dividend);
-    setValue(cpu, ram, 1, divisor);
+    // divisao de um numero negativo e um positivo
+    if(dividend > 0 && divisor < 0){
+        setValue(cpu, ram, 0, dividend);
+        setValue(cpu, ram, 2, divisor);
+        subtraction(cpu, ram, 1, 2);
+        setValue(cpu, ram, 2, 0);
+    }
+    if(dividend < 0 && divisor > 0){
+        setValue(cpu, ram, 1, dividend);
+        subtraction(cpu, ram, 0, 1);
+        setValue(cpu, ram, 1, divisor);
+    }
+
+    // divisao de dois numeros negativos
+    if(dividend < 0 && divisor < 0){
+        setValue(cpu, ram, 1, dividend);
+        subtraction(cpu, ram, 0, 1);
+        setValue(cpu, ram, 1, 0);
+        setValue(cpu, ram, 2, divisor);
+        subtraction(cpu, ram, 1, 2);
+        setValue(cpu, ram, 2, 0);
+    }
+
+    // divisao de dois numeros positivos
+    if(dividend > 0 && divisor > 0){
+        setValue(cpu, ram, 0, dividend);
+        setValue(cpu, ram, 1, divisor);
+    }
+
     setValue(cpu, ram, 3, 1);
 
-    while(dividend >= divisor){
+    while(getValue(cpu, ram, 0) >= getValue(cpu, ram, 1)){
         subtraction(cpu, ram, 0, 1);
         sum(cpu, ram, 2, 3);
+    }
 
-        dividend = getValue(cpu, ram, 0);
+    // correcao do sinal em divisao de um numero negativo e um positivo
+    if((dividend < 0) ^ (divisor < 0)){
+        setValue(cpu, ram, 1, 0);
+        subtraction(cpu, ram, 1, 2);
     }
 
     int aux = getValue(cpu, ram, 2);
