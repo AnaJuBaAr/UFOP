@@ -179,17 +179,16 @@ int division(Cpu *cpu, Ram *ram, int dividend, int divisor){
 }
 
 int remainderOfDivision(Cpu *cpu, Ram *ram, int dividend, int divisor){
-    ram = createEmptyRam(2);
+    // essa funcao so funciona com a divisao de numeros positivos
+    ram = createEmptyRam(3);
     cpu = createCpu();
 
     setValue(cpu, ram, 0, dividend);
     setValue(cpu, ram, 1, divisor);
 
-    while(dividend >= divisor){
-        subtraction(cpu, ram, 0, 1);
-
-        dividend = getValue(cpu, ram, 0);
-    }
+    setValue(cpu, ram, 2, division(NULL, NULL, getValue(cpu, ram, 0), getValue(cpu, ram, 1)));
+    setValue(cpu, ram, 1, multiplication(NULL, NULL, getValue(cpu, ram, 1), getValue(cpu, ram, 2)));
+    subtraction(cpu, ram, 0, 1);
 
     int aux = getValue(cpu, ram, 0);
 

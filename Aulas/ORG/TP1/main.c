@@ -11,8 +11,8 @@ int main(){
     Ram *ram = NULL;
 
     //int x = multiplication(cpu, ram, -10, 15);
-    int x = division(cpu, ram, 11, 2);
-    //int x = remainderOfDivision(cpu, ram, 11, 2);
+    //int x = division(cpu, ram, 11, 2);
+    int x = remainderOfDivision(cpu, ram, 11, 2);
     //int x = fibonacci(cpu, ram, 5);
     //int x = factorin(cpu, ram, 10);
     //int x = exponentiation(cpu, ram, -2, 3);
