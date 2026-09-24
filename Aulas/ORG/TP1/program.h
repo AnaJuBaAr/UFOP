@@ -22,6 +22,9 @@ int squareRoot(Cpu *cpu, Ram *ram, int rooting);
 int mdc(Cpu *cpu, Ram *ram, int a, int b);
 int delta(Ram *ram, Cpu *cpu, int a, int b, int c);
 int bhaskara(Cpu *cpu, Ram *ram, int a, int b, int c);
+int pitagoras(Cpu *cpu, Ram *ram, int hypotenuse, int cathetusA, int cathetusB);
+int pitagorasCathetus(Ram *ram, Cpu *cpu, int hypotenuse, int cathetus);
+int pitagorasHypothenuse(Ram *ram, Cpu *cpu, int cathetusA, int cathetusB);
 //pitagoras
 //coeficienteBinomial
 
@@ -406,6 +409,79 @@ int bhaskara(Cpu *cpu, Ram *ram, int a, int b, int c){
     destroyCpu(cpu);
     destroyRam(ram);
     return 0;
+}
+
+int pitagoras(Cpu *cpu, Ram *ram, int hypotenuse, int cathetusA, int cathetusB){
+    ram = createEmptyRam(2);
+    cpu = createCpu();
+
+    if(hypotenuse < 0){
+        setValue(cpu, ram, 0, cathetusA);
+        setValue(cpu, ram, 1, cathetusB);
+
+        setValue(cpu, ram, 0, pitagorasHypothenuse(NULL, NULL, getValue(cpu, ram, 0), getValue(cpu, ram, 1)));
+    }
+    if(cathetusA < 0){
+        setValue(cpu, ram, 0, hypotenuse);
+        setValue(cpu, ram, 1, cathetusB);
+
+        setValue(cpu, ram, 0, pitagorasCathetus(NULL, NULL, getValue(cpu, ram, 0), getValue(cpu, ram, 1)));
+    }
+    if(cathetusB < 0){
+        setValue(cpu, ram, 0, hypotenuse);
+        setValue(cpu, ram, 1, cathetusA);
+
+        setValue(cpu, ram, 0, pitagorasCathetus(NULL, NULL, getValue(cpu, ram, 0), getValue(cpu, ram, 1)));
+    }
+
+    int aux = getValue(cpu, ram, 0);
+
+    destroyCpu(cpu);
+    destroyRam(ram);
+
+    return aux;
+}
+
+int pitagorasCathetus(Ram *ram, Cpu *cpu, int hypotenuse, int cathetus){
+    ram = createEmptyRam(2);
+    cpu = createCpu();
+
+    setValue(cpu, ram, 0, hypotenuse);
+    setValue(cpu, ram, 0, exponentiation(NULL, NULL, getValue(cpu, ram, 0), 2));
+    setValue(cpu, ram, 1, cathetus);
+    setValue(cpu, ram, 1, exponentiation(NULL, NULL, getValue(cpu, ram, 1), 2));
+
+    subtraction(cpu, ram, 0, 1);
+
+    setValue(cpu, ram, 0, squareRoot(NULL, NULL, getValue(cpu, ram, 0)));
+
+    int aux = getValue(cpu, ram, 0);
+
+    destroyCpu(cpu);
+    destroyRam(ram);
+
+    return aux;
+}
+
+int pitagorasHypothenuse(Ram *ram, Cpu *cpu, int cathetusA, int cathetusB){
+    ram = createEmptyRam(2);
+    cpu = createCpu();
+
+    setValue(cpu, ram, 0, cathetusA);
+    setValue(cpu, ram, 0, exponentiation(NULL, NULL, getValue(cpu, ram, 0), 2));
+    setValue(cpu, ram, 1, cathetusB);
+    setValue(cpu, ram, 1, exponentiation(NULL, NULL, getValue(cpu, ram, 1), 2));
+
+    sum(cpu, ram, 0, 1);
+
+    setValue(cpu, ram, 0, squareRoot(NULL, NULL, getValue(cpu, ram, 0)));
+
+    int aux = getValue(cpu, ram, 0);
+
+    destroyCpu(cpu);
+    destroyRam(ram);
+
+    return aux;
 }
 
 #endif
