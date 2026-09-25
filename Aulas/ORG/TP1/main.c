@@ -17,7 +17,7 @@ int main(){
     //int x = factorin(cpu, ram, 10);
     //int x = exponentiation(cpu, ram, 4, 2);
     //bool x = primeNumber(ram, cpu, 3);
-    //int x = squareRoot(cpu, ram, 16);
+    //int x = squareRoot(cpu, ram, 2);
     //int x = mdc(cpu, ram, 12, 18);
     //int x = delta(ram, cpu, 1, 2, 5);
     //int x = bhaskara(cpu, ram, 1, -5, 6);

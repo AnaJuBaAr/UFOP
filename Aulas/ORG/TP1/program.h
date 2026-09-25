@@ -25,8 +25,6 @@ int bhaskara(Cpu *cpu, Ram *ram, int a, int b, int c);
 int pitagoras(Cpu *cpu, Ram *ram, int hypotenuse, int cathetusA, int cathetusB);
 int pitagorasCathetus(Ram *ram, Cpu *cpu, int hypotenuse, int cathetus);
 int pitagorasHypothenuse(Ram *ram, Cpu *cpu, int cathetusA, int cathetusB);
-//pitagoras
-//coeficienteBinomial
 
 /*void random(Ram *ram, Cpu *cpu, int qtdInstruction){
     Instruction *instruction = createInstruction(qtdInstruction);
