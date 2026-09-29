@@ -7,15 +7,18 @@
 
 #include <stdbool.h>
 
+// ===================== FORNECIDOS PELO PROFESSOR =====================
 void sum(Cpu *cpu, Ram *ram, int add1, int add2);
 void subtraction(Cpu *cpu, Ram *ram, int add1, int add2);
 void setValue(Cpu *cpu, Ram *ram, int add, int value);
 int getValue(Cpu *cpu, Ram *ram, int add);
-int multiplication(Cpu *cpu, Ram *ram, int multiplier, int multiplicand);
-int division(Cpu *cpu, Ram *ram, int dividend, int divisor);
+int multiplication(Cpu *cpu, Ram *ram, int multiplier, int multiplicand); //modificado por mim
+int division(Cpu *cpu, Ram *ram, int dividend, int divisor); //modificado por mim
+int factorin(Cpu *cpu, Ram *ram, int factorial);
+
+// ========================= DESENVOLVIDOS POR MIM =========================
 int remainderOfDivision(Cpu *cpu, Ram *ram, int dividend, int divisor);
 int fibonacci(Cpu *cpu, Ram *ram, int nesim);
-int factorin(Cpu *cpu, Ram *ram, int factorial);
 int exponentiation(Cpu *cpu, Ram *ram, int base, int exponent);
 bool primeNumber(Ram *ram, Cpu *cpu, int x);
 int squareRoot(Cpu *cpu, Ram *ram, int rooting);
@@ -96,6 +99,7 @@ int multiplication(Cpu *cpu, Ram *ram, int multiplier, int multiplicand){
     ram = createEmptyRam(4);
     cpu = createCpu();
 
+    // multiplicacao de dois numeros negativos
     if(multiplier < 0 && multiplicand < 0){
         setValue(cpu, ram, 2, multiplicand);
         subtraction(cpu, ram, 1, 2);
@@ -104,7 +108,9 @@ int multiplication(Cpu *cpu, Ram *ram, int multiplier, int multiplicand){
         setValue(cpu, ram, 3, multiplier);
         subtraction(cpu, ram, 2, 3);
     }
-    else if(multiplier < 0 && multiplicand > 0){
+
+    // multiplicacao de dois positivos ou de um positivo e um negativo
+    else if(multiplier < 0 && multiplicand > 0){ // modificacao para se o negativo for o multiplicand
         setValue(cpu, ram, 1, multiplier);
         setValue(cpu, ram, 2, multiplicand);
     }
@@ -169,49 +175,10 @@ int division(Cpu *cpu, Ram *ram, int dividend, int divisor){
     if((dividend < 0) ^ (divisor < 0)){
         setValue(cpu, ram, 1, 0);
         subtraction(cpu, ram, 1, 2);
+        setValue(cpu, ram, 2, getValue(cpu, ram, 1));
     }
 
     int aux = getValue(cpu, ram, 2);
-
-    destroyCpu(cpu);
-    destroyRam(ram);
-
-    return aux;
-}
-
-int remainderOfDivision(Cpu *cpu, Ram *ram, int dividend, int divisor){
-    // essa funcao so funciona com a divisao de numeros positivos
-    ram = createEmptyRam(3);
-    cpu = createCpu();
-
-    setValue(cpu, ram, 0, dividend);
-    setValue(cpu, ram, 1, divisor);
-
-    setValue(cpu, ram, 2, division(NULL, NULL, getValue(cpu, ram, 0), getValue(cpu, ram, 1)));
-    setValue(cpu, ram, 1, multiplication(NULL, NULL, getValue(cpu, ram, 1), getValue(cpu, ram, 2)));
-    subtraction(cpu, ram, 0, 1);
-
-    int aux = getValue(cpu, ram, 0);
-
-    destroyCpu(cpu);
-    destroyRam(ram);
-
-    return aux;
-}
-
-int fibonacci(Cpu *cpu, Ram *ram, int nesim){
-    ram = createEmptyRam(3);
-    cpu = createCpu();
-
-    setValue(cpu, ram, 2, 1);
-    for(int i = nesim; i >= 1; i--){
-        setValue(cpu, ram, 0, getValue(cpu, ram, 1));
-        setValue(cpu, ram, 1, getValue(cpu, ram, 2));
-        sum(cpu, ram, 0, 1);
-        setValue(cpu, ram, 2, getValue(cpu, ram, 0));
-    }
-
-    int aux = getValue(cpu, ram, 0);
 
     destroyCpu(cpu);
     destroyRam(ram);
@@ -239,7 +206,54 @@ int factorin(Cpu *cpu, Ram *ram, int factorial){
     return aux;
 }
 
+int remainderOfDivision(Cpu *cpu, Ram *ram, int dividend, int divisor){
+    // essa funcao so funciona com a divisao de numeros positivos
+    /* Formula usada:
+     * x = dividend / divisor
+     * y = x * divisor
+     * resultado = dividend - y
+     */
+
+    ram = createEmptyRam(3);
+    cpu = createCpu();
+
+    setValue(cpu, ram, 0, dividend);
+    setValue(cpu, ram, 1, divisor);
+
+    setValue(cpu, ram, 2, division(NULL, NULL, getValue(cpu, ram, 0), getValue(cpu, ram, 1)));
+    setValue(cpu, ram, 1, multiplication(NULL, NULL, getValue(cpu, ram, 1), getValue(cpu, ram, 2)));
+    subtraction(cpu, ram, 0, 1);
+
+    int aux = getValue(cpu, ram, 0);
+
+    destroyCpu(cpu);
+    destroyRam(ram);
+
+    return aux;
+}
+
+int fibonacci(Cpu *cpu, Ram *ram, int nesim){
+    ram = createEmptyRam(3);
+    cpu = createCpu();
+
+    setValue(cpu, ram, 2, 1);
+    for(int i = nesim; i > 1; i--){
+        setValue(cpu, ram, 0, getValue(cpu, ram, 1));
+        setValue(cpu, ram, 1, getValue(cpu, ram, 2));
+        sum(cpu, ram, 0, 1);
+        setValue(cpu, ram, 2, getValue(cpu, ram, 0));
+    }
+
+    int aux = getValue(cpu, ram, 0);
+
+    destroyCpu(cpu);
+    destroyRam(ram);
+
+    return aux;
+}
+
 int exponentiation(Cpu *cpu, Ram *ram, int base, int exponent){
+    // repete a multiplicacao de base * getValue(0) por base vezes
     ram = createEmptyRam(3);
     cpu = createCpu();
 
@@ -260,35 +274,54 @@ int exponentiation(Cpu *cpu, Ram *ram, int base, int exponent){
 }
 
 bool primeNumber(Ram *ram, Cpu *cpu, int x){
-    ram = NULL;
+    // testa os valores menores que x e se x é divisivel por algum deles, entao o numero nao eh primo
+
+    ram = createEmptyRam(1);
     cpu = createCpu();
 
     setReg1(cpu, x);
+    setValue(cpu, ram, 0, x);
 
-    if(getReg1(cpu) <= 2){
+    if(getValue(cpu, ram, 0) <= 2){
         destroyCpu(cpu);
+        destroyRam(ram);
 
-        return false;
+        return 1;
     }
 
-    for(int i = 2; i < getReg1(cpu); i++){
-        if(!division(NULL, NULL, getReg1(cpu), i)){
+    for(int i = 2; i < getValue(cpu, ram, 0); i++){
+        if(!remainderOfDivision(NULL, NULL, getValue(cpu, ram, 0), i)){
             destroyCpu(cpu);
+            destroyRam(ram);
 
-            return false;
+            return 0;
         }
     }
 
     destroyCpu(cpu);
+    destroyRam(ram);
 
-    return true;
+    return 1;
 }
 
 int squareRoot(Cpu *cpu, Ram *ram, int rooting){
+    /* confere se rooting eh negativo, caso em que nao ha divisao
+     * multiplica i*i enquanto o resultado for menor que rooting
+     * ao final confirma se o resto da divisao entre rooting e a ultima multiplicacao de i*i eh diferente de 0
+     * se a divisao for diferente de 0, entao nao existe raiz exata
+     */ 
+
     ram = createEmptyRam(3);
     cpu = createCpu();
 
     setValue(cpu, ram, 2, rooting);
+
+    if(getValue(cpu, ram, 2) < 0){
+        destroyCpu(cpu);
+        destroyRam(ram);
+
+        return 0;
+    }
 
     for(int i = 1; getValue(cpu, ram, 1) < getValue(cpu, ram, 2); i++){
         setValue(cpu, ram, 0, i);
@@ -339,12 +372,16 @@ int delta(Ram *ram, Cpu *cpu, int a, int b, int c){
     setValue(cpu, ram, 0, a);
     setValue(cpu, ram, 1, c);
 
+    // a * c
     setValue(cpu, ram, 1, multiplication(NULL, NULL, getValue(cpu, ram, 0), getValue(cpu, ram, 1)));
+    // (a * c) * 4
     setValue(cpu, ram, 1, multiplication(NULL, NULL, getValue(cpu, ram, 1), 4));
 
+    // b²
     setValue(cpu, ram, 0, b);
     setValue(cpu, ram, 0, exponentiation(NULL, NULL, getValue(cpu, ram, 0), 2));
 
+    // b²-4(a)(c)
     subtraction(cpu, ram, 0, 1);
 
     int aux = getValue(cpu, ram, 0);
@@ -363,10 +400,11 @@ int bhaskara(Cpu *cpu, Ram *ram, int a, int b, int c){
     setValue(cpu, ram, 2, b);
     setValue(cpu, ram, 3, a);
 
-    subtraction(cpu, ram, 0, 2);
-    setValue(cpu, ram, 1, delta(ram, cpu, getValue(cpu, ram, 3), getValue(cpu, ram, 2), getValue(cpu, ram, 1)));
-    setValue(cpu, ram, 2, multiplication(NULL, NULL, getValue(cpu, ram, 3), 2));
+    subtraction(cpu, ram, 0, 2); // -b
+    setValue(cpu, ram, 1, delta(ram, cpu, getValue(cpu, ram, 3), getValue(cpu, ram, 2), getValue(cpu, ram, 1))); // Δ
+    setValue(cpu, ram, 2, multiplication(NULL, NULL, getValue(cpu, ram, 3), 2)); // 2a
 
+    // Δ menor que 0
     if(getValue(cpu, ram, 1) < 0){
         printf("\nNão possui raiz");
 
@@ -374,8 +412,9 @@ int bhaskara(Cpu *cpu, Ram *ram, int a, int b, int c){
         destroyRam(ram);
         return 0;
     }
+    // Δ igual a 0
     else if(getValue(cpu, ram, 1) == 0){
-        sum(cpu, ram, 0, 1);
+        sum(cpu, ram, 0, 1); // -b+Δ
         setValue(cpu, ram, 3, division(NULL, NULL, getValue(cpu, ram, 0), getValue(cpu, ram, 2)));
         printf("\nDuas raízes iguais: %d", getValue(cpu, ram, 3));
         
@@ -383,18 +422,19 @@ int bhaskara(Cpu *cpu, Ram *ram, int a, int b, int c){
         destroyRam(ram);
         return 1;
     }
+    // Δ maior que 0
     else{
         printf("\nDuas raizes diferentes:\n");
 
-        setValue(cpu, ram, 3, getValue(cpu, ram, 2));
-        setValue(cpu, ram, 2, getValue(cpu, ram, 1));
-        setValue(cpu, ram, 1, getValue(cpu, ram, 0));
+        setValue(cpu, ram, 3, getValue(cpu, ram, 2)); // 2a
+        setValue(cpu, ram, 2, squareRoot(NULL, NULL, getValue(cpu, ram, 1))); // √Δ
+        setValue(cpu, ram, 1, getValue(cpu, ram, 0)); // -b
 
-        sum(cpu, ram, 0, 2);
-        setValue(cpu, ram, 0, division(NULL, NULL, getValue(cpu, ram, 0), getValue(cpu, ram, 3)));
+        sum(cpu, ram, 0, 2); //-b+√Δ
+        setValue(cpu, ram, 0, division(NULL, NULL, getValue(cpu, ram, 0), getValue(cpu, ram, 3))); //(-b+√Δ)/2a
 
-        subtraction(cpu, ram, 1, 2);
-        setValue(cpu,ram, 1, division(NULL, NULL, getValue(cpu, ram, 1), getValue(cpu, ram, 3)));
+        subtraction(cpu, ram, 1, 2); //-b-√Δ
+        setValue(cpu,ram, 1, division(NULL, NULL, getValue(cpu, ram, 1), getValue(cpu, ram, 3))); //(-b-√Δ)/2a
         
         printf("X1 = %d\n", getValue(cpu, ram, 0));
         printf("X2 = %d", getValue(cpu, ram, 1));
@@ -410,6 +450,8 @@ int bhaskara(Cpu *cpu, Ram *ram, int a, int b, int c){
 }
 
 int pitagoras(Cpu *cpu, Ram *ram, int hypotenuse, int cathetusA, int cathetusB){
+    // o argumento a ser calculado tem a entrada igual a -1
+
     ram = createEmptyRam(2);
     cpu = createCpu();
 
@@ -445,13 +487,13 @@ int pitagorasCathetus(Ram *ram, Cpu *cpu, int hypotenuse, int cathetus){
     cpu = createCpu();
 
     setValue(cpu, ram, 0, hypotenuse);
-    setValue(cpu, ram, 0, exponentiation(NULL, NULL, getValue(cpu, ram, 0), 2));
+    setValue(cpu, ram, 0, exponentiation(NULL, NULL, getValue(cpu, ram, 0), 2)); //h²
     setValue(cpu, ram, 1, cathetus);
-    setValue(cpu, ram, 1, exponentiation(NULL, NULL, getValue(cpu, ram, 1), 2));
+    setValue(cpu, ram, 1, exponentiation(NULL, NULL, getValue(cpu, ram, 1), 2)); //c²
 
-    subtraction(cpu, ram, 0, 1);
+    subtraction(cpu, ram, 0, 1); // h²-c²
 
-    setValue(cpu, ram, 0, squareRoot(NULL, NULL, getValue(cpu, ram, 0)));
+    setValue(cpu, ram, 0, squareRoot(NULL, NULL, getValue(cpu, ram, 0))); // √h²-c²
 
     int aux = getValue(cpu, ram, 0);
 
@@ -466,13 +508,13 @@ int pitagorasHypothenuse(Ram *ram, Cpu *cpu, int cathetusA, int cathetusB){
     cpu = createCpu();
 
     setValue(cpu, ram, 0, cathetusA);
-    setValue(cpu, ram, 0, exponentiation(NULL, NULL, getValue(cpu, ram, 0), 2));
+    setValue(cpu, ram, 0, exponentiation(NULL, NULL, getValue(cpu, ram, 0), 2)); //c1²
     setValue(cpu, ram, 1, cathetusB);
-    setValue(cpu, ram, 1, exponentiation(NULL, NULL, getValue(cpu, ram, 1), 2));
+    setValue(cpu, ram, 1, exponentiation(NULL, NULL, getValue(cpu, ram, 1), 2)); //c2²
 
-    sum(cpu, ram, 0, 1);
+    sum(cpu, ram, 0, 1); //c1²+c2²
 
-    setValue(cpu, ram, 0, squareRoot(NULL, NULL, getValue(cpu, ram, 0)));
+    setValue(cpu, ram, 0, squareRoot(NULL, NULL, getValue(cpu, ram, 0))); //√c1²+c2²
 
     int aux = getValue(cpu, ram, 0);
 
