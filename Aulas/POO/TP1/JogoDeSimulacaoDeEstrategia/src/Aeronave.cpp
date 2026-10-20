@@ -47,6 +47,6 @@ void Aeronave :: setAlcance(int e_alcance){
 }
 
 int Aeronave :: getPoderAtaque(){
-    int poderAtaque = ((getPoderAtaque() * 5) + (getManobralidade() * 3) + (getAlcance() * 2) / 10);
+    int poderAtaque = ((getPoderAtaqueUnidade() * 5) + (getManobralidade() * 3) + (getAlcance() * 2)) / 10;
     return poderAtaque;
 }
