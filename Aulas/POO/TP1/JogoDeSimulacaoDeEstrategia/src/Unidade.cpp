@@ -21,7 +21,7 @@ Unidade :: Unidade(){
     destruicoes = 0;
 }
 
-int Unidade :: getPoderAtaque() const{
+int Unidade :: getPoderAtaqueUnidade() const{
     return poderAtaque;
 }
 void Unidade :: setPoderAtaque(int e_poderAtaque){

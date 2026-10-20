@@ -30,19 +30,11 @@ class Unidade{
         Unidade();
         virtual ~Unidade(){}
 
-        int getPoderAtaque() const{
-            return poderAtaque;
-        }
-        void setPoderAtaque(int pa){
-            poderAtaque = pa;
-        }
+        int getPoderAtaqueUnidade() const;
+        void setPoderAtaque(int e_poderAtaque);
 
-        int getDestruicoes() const{
-            return destruicoes;
-        }
-        void setDestruicoes(int des){
-            destruicoes = des;
-        }
+        int getDestruicoes() const;
+        void setDestruicoes(int e_destruicoes);
 
         //funcao polimorfica pura
         int virtual getPoderAtaque() = 0;
