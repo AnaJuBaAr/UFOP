@@ -17,7 +17,7 @@ class Veiculo : public Unidade{
         void setBlindagem(int);
 
         int getPotenciaDeFogo() const;
-        int setPotenciaDeFogo(int);
+        void setPotenciaDeFogo(int);
 
         int getPoderAtaque() override;
 };

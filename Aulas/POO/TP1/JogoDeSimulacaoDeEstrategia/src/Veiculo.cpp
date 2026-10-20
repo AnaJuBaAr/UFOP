@@ -42,11 +42,11 @@ void Veiculo :: setBlindagem(int e_blindagem){
 int Veiculo :: getPotenciaDeFogo() const{
     return potenciaDeFogo;
 }
-int Veiculo :: setPotenciaDeFogo(int e_potenciaDeFogo){
+void Veiculo :: setPotenciaDeFogo(int e_potenciaDeFogo){
     potenciaDeFogo = e_potenciaDeFogo;
 }
 
 int Veiculo :: getPoderAtaque(){
-    int poderAtaque = ((getPoderAtaque() * 5) + (getBlindagem() * 4) + (getPotenciaDeFogo()) / 10);
+    int poderAtaque = ((getPoderAtaqueUnidade() * 5) + (getBlindagem() * 4) + (getPotenciaDeFogo() * 1)) / 10;
     return poderAtaque;
 }
