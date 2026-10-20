@@ -47,6 +47,6 @@ void Infantaria :: setVelocidade(int e_velocidade){
 }
 
 int Infantaria :: getPoderAtaque(){
-    int poderAtaque = ((getPoderAtaque() * 5) + (getForca() * 3) + (getVelocidade() * 2) / 10);
+    int poderAtaque = ((getPoderAtaqueUnidade() * 5) + (getForca() * 3) + (getVelocidade() * 2)) / 10;
     return poderAtaque;
 }
