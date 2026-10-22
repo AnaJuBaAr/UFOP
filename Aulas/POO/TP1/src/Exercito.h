@@ -31,7 +31,7 @@ class Exercito{
         
     public:
         Exercito(std::string);
-        ~Exercito(){}
+        ~Exercito();
 
         std::string getNome() const;
         void setNome(std::string);
@@ -49,6 +49,12 @@ class Exercito{
         void setEmpates(int);
 
         void adicionarUnidade(Unidade*);
+
+        int getPoderAtaqueTotal();
+        void somaVitorias();
+        void somaDerrotas();
+        void somaEmpates();
+        void somaDestruicaoUnidades();
 
         std::string getResultado();
         

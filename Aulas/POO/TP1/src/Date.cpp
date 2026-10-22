@@ -39,6 +39,6 @@ void Date :: setAno(int e_ano){
 }
 
 std::string Date :: formatarData(){
-    std::string data = "%d/%d/%d", getDia(), getMes(), getAno();
+    std::string data = std::to_string(getDia()) + "/" + std::to_string(getMes()) + "/" + std::to_string(getAno()) + "\n";
     return data;
 }

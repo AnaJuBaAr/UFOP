@@ -28,7 +28,7 @@ class Unidade{
     public:
         //construtor e destrutor
         Unidade();
-        virtual ~Unidade(){}
+        virtual ~Unidade() = default;
 
         int getPoderAtaqueUnidade() const;
         void setPoderAtaque(int e_poderAtaque);

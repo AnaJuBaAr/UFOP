@@ -20,6 +20,11 @@
  * Compoe uma Campanha
  */
 
+
+#include "Aeronave.h"
+#include "Infantaria.h"
+#include "Veiculo.h"
+
 class Batalha{
     private:
         Date data;
@@ -29,8 +34,9 @@ class Batalha{
         int resultadoB;
 
     public:
+        Batalha(){};
         Batalha(Date, Exercito*, Exercito*);
-        ~Batalha(){}
+        ~Batalha();
 
         Date getData() const;
         void setData(Date);
@@ -48,7 +54,7 @@ class Batalha{
         void setResultadoB(int);
 
         void ataqueExercitoA();
-        void AtaqueExercitoB();
+        void ataqueExercitoB();
         std::string getResultado();
 };
 

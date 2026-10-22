@@ -10,6 +10,7 @@ private:
     int mes;
     int ano;
 public:
+    Date(){}
     Date(int, int, int);
     ~Date(){}
 

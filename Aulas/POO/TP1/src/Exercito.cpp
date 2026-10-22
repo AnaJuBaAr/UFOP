@@ -16,6 +16,7 @@
 
 #include "Unidade.h"
 #include "Exercito.h"
+#include "Infantaria.h"
 
 Exercito :: Exercito(std::string e_nome){
     nome = e_nome;
@@ -23,6 +24,13 @@ Exercito :: Exercito(std::string e_nome){
     vitorias = 0;
     derrotas = 0;
     empates = 0;
+}
+
+Exercito :: ~Exercito(){
+    for(size_t i = 0; i < unidades.size(); i++){
+        delete unidades[i];
+    }
+    unidades.clear();
 }
 
 std::string Exercito :: getNome() const{
@@ -64,11 +72,47 @@ void Exercito :: adicionarUnidade(Unidade* e_unidade){
     unidades.push_back(e_unidade);
 }
 
-std::string Exercito :: getResultado(){
-    std::string resultado = "Vitórias: %d, Empates: %d, Derrotas: %d", getVitorias(), getEmpates(), getDerrotas();
+//soma total do poder de ataque de todas as unidades dentro do exercito para ser usado no calculo de quem ganhou o ataque
+int Exercito :: getPoderAtaqueTotal(){
+    int resultado = 0;
+    for(size_t i = 0; i < unidades.size(); i++){
+        resultado += unidades[i]->getPoderAtaque();
+    }
+    
     return resultado;
 }
 
-void Exercito :: imprimeUnidade(){
+void Exercito :: somaVitorias(){
+    setVitorias(getVitorias()+1);
+}
 
+void Exercito :: somaDerrotas(){
+    setDerrotas(getDerrotas()+1);
+}
+
+void Exercito :: somaEmpates(){
+    setEmpates(getEmpates()+1);
+}
+
+void Exercito :: somaDestruicaoUnidades(){
+    for(size_t i = 0; i < unidades.size(); i++){
+        unidades[i]->somaDestruicoes();
+    }
+}
+
+std::string Exercito :: getResultado(){
+    std::string resultado = 
+                            "Vitórias: " + std::to_string(getVitorias()) +
+                            ", Empates: " + std::to_string(getEmpates()) +
+                            ", Derrotas: " + std::to_string(getDerrotas()) + "\n";
+    return resultado;
+}
+
+// quais informações da unidade devem ser impressas
+void Exercito :: imprimeUnidade(){
+    for(size_t i = 0; i < unidades.size(); i++){
+        std::cout << "Unidade " << i+1 << std::endl;
+        std::cout << "Poder de ataque: " << unidades[i]->getPoderAtaque() << std::endl;
+        std::cout << "Destruições: " << unidades[i]->getDestruicoes() << std::endl;
+    }
 }

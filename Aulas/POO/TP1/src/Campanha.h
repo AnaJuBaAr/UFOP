@@ -2,6 +2,12 @@
 #define CAMPANHA_H
 
 #include "Batalha.h"
+#include "Aeronave.h"
+#include "Infantaria.h"
+#include "Veiculo.h"
+
+#include <algorithm>
+#include <fstream>
 
 /*              Campanha
  * ---------------------------------------
@@ -20,13 +26,15 @@ class Campanha{
 
     public:
         Campanha();
-        ~Campanha(){}
+        ~Campanha();
 
         std::vector<Batalha*> getBatalhas() const;
         void setBatalhas(std::vector<Batalha*>);
 
-        void simularBatalha();
-        void gerarTabelaDePosicoes();
+        void adicionarBatalha(Date, std::string, std::string);
+
+        void simularBatalhas();
+        void gerarTabelaDePosicoes(int);
         void mostrarUnidadeMaisDestrutiva();
 };
 
