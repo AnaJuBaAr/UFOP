@@ -64,7 +64,6 @@ void Campanha :: adicionarBatalha(Date date,std::string nomeA, std::string nomeB
 void Campanha :: simularBatalhas(){
     for(size_t i = 0; i < batalhas.size(); i++){
         batalhas[i]->ataqueExercitoA();
-        //erro de segmentação
         batalhas[i]->ataqueExercitoB();
 
         std::cout << batalhas[i]->getResultado();
@@ -81,6 +80,7 @@ void Campanha :: gerarTabelaDePosicoes(int possibilidade){
 
         for(size_t j = 0; j < exercitos.size(); j++){
             if(exercitos[j]->getNome() == batalhas[i]->getExercitoA()->getNome()){
+                exercitos[j]->setVitorias(exercitos[j]->getVitorias() + batalhas[i]->getResultadoA());
                 existe = true;
                 break;
             }
@@ -92,6 +92,7 @@ void Campanha :: gerarTabelaDePosicoes(int possibilidade){
         existe = false;
         for(size_t j = 0; j < exercitos.size(); j++){
             if(exercitos[j]->getNome() == batalhas[i]->getExercitoB()->getNome()){
+                exercitos[j]->setVitorias(exercitos[j]->getVitorias() + batalhas[i]->getResultadoB());
                 existe = true;
                 break;
             }
@@ -124,20 +125,25 @@ void Campanha :: gerarTabelaDePosicoes(int possibilidade){
 
 void Campanha :: mostrarUnidadeMaisDestrutiva(){
     Unidade* unidadeMaisDestrutiva = nullptr;
+    Exercito* exercitoPertencente = nullptr;
 
     for(size_t i = 0; i < batalhas.size(); i++){
         for(size_t j = 0; j < batalhas[i]->getExercitoA()->getUnidades().size(); j++){
             if((unidadeMaisDestrutiva == nullptr) || (batalhas[i]->getExercitoA()->getUnidades()[j]->getDestruicoes() > unidadeMaisDestrutiva->getDestruicoes())){
                 unidadeMaisDestrutiva = batalhas[i]->getExercitoA()->getUnidades()[j];
+                exercitoPertencente = batalhas[i]->getExercitoA();
             }
             if(batalhas[i]->getExercitoB()->getUnidades()[j]->getDestruicoes() > unidadeMaisDestrutiva->getDestruicoes()){
                 unidadeMaisDestrutiva = batalhas[i]->getExercitoB()->getUnidades()[j];
+                exercitoPertencente = batalhas[i]->getExercitoB();
             }
         }
     }
 
     std::cout << "Unidade mais destrutiva. " 
-              << "Poder de ataque: " 
-              << unidadeMaisDestrutiva->getPoderAtaque() 
+              << "Exercito: " << exercitoPertencente->getNome() << ", "
+              << "Unidade de " << unidadeMaisDestrutiva->getTipo() << ". "
+              << "Poder de ataque: " << unidadeMaisDestrutiva->getPoderAtaque() 
               << ", Destruições: " << unidadeMaisDestrutiva->getDestruicoes() << std::endl;
+    unidadeMaisDestrutiva->printUnidade();
 }

@@ -50,3 +50,12 @@ int Infantaria :: getPoderAtaque(){
     int poderAtaque = ((getPoderAtaqueUnidade() * 5) + (getForca() * 3) + (getVelocidade() * 2)) / 10;
     return poderAtaque;
 }
+
+void Infantaria :: printUnidade(){
+    std::cout << "Forca: " << getForca() << ", "
+              << "Velocidade: " << getVelocidade() << std::endl;
+}
+
+std::string Infantaria :: getTipo(){
+    return "Infantaria";
+}

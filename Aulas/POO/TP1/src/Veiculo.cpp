@@ -50,3 +50,12 @@ int Veiculo :: getPoderAtaque(){
     int poderAtaque = ((getPoderAtaqueUnidade() * 5) + (getBlindagem() * 4) + (getPotenciaDeFogo() * 1)) / 10;
     return poderAtaque;
 }
+
+void Veiculo :: printUnidade(){
+    std::cout << "Blindagem: " << getBlindagem() << ", " 
+              << "Potencia de fogo: " << getPotenciaDeFogo() << std::endl;
+}
+
+std::string Veiculo :: getTipo(){
+    return "Veiculo";
+}

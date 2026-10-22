@@ -40,6 +40,9 @@ class Unidade{
         int virtual getPoderAtaque() = 0;
         //
         void somaDestruicoes();
+
+        std::string virtual getTipo() = 0;
+        void virtual printUnidade() = 0;
 };
 
 #endif

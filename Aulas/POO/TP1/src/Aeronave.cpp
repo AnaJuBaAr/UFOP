@@ -50,3 +50,12 @@ int Aeronave :: getPoderAtaque(){
     int poderAtaque = ((getPoderAtaqueUnidade() * 5) + (getManobralidade() * 3) + (getAlcance() * 2)) / 10;
     return poderAtaque;
 }
+
+void Aeronave :: printUnidade(){
+    std::cout << "Manobralidade: " << getManobralidade() << ", "
+              << "Alcance: " << getAlcance() << std::endl;
+}
+
+std::string Aeronave :: getTipo(){
+    return "Aeronave";
+}

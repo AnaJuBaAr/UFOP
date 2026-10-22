@@ -20,6 +20,9 @@ class Infantaria : public Unidade{
         void setVelocidade(int);
 
         int getPoderAtaque() override;
+
+        void printUnidade() override;
+        std::string getTipo() override;
 };
 
 #endif

@@ -108,7 +108,6 @@ std::string Exercito :: getResultado(){
     return resultado;
 }
 
-// quais informações da unidade devem ser impressas
 void Exercito :: imprimeUnidade(){
     for(size_t i = 0; i < unidades.size(); i++){
         std::cout << "Unidade " << i+1 << std::endl;

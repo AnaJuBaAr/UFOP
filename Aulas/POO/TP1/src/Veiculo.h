@@ -20,6 +20,9 @@ class Veiculo : public Unidade{
         void setPotenciaDeFogo(int);
 
         int getPoderAtaque() override;
+
+        void printUnidade() override;
+        std::string getTipo() override;
 };
 
 #endif

@@ -21,6 +21,9 @@ class Aeronave : public Unidade{
         void setAlcance(int);
 
         int getPoderAtaque() override;
+
+        void printUnidade() override;
+        std::string getTipo() override;
 };
 
 #endif

@@ -7,8 +7,10 @@ int main() {
 
     Campanha campanha;
 
-    campanha.adicionarBatalha(date, "1", "2");
-    campanha.adicionarBatalha(date, "3", "4");
+    campanha.adicionarBatalha(date, "Espartanos", "Persas");
+    campanha.adicionarBatalha(date, "Romanos", "Germânicos");
+    campanha.adicionarBatalha(date, "Egípcios", "Assírios");
+    campanha.adicionarBatalha(date, "Espartanos", "Mongois");
 
     campanha.simularBatalhas();
 
