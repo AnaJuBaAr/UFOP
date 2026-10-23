@@ -9,8 +9,8 @@ int main() {
 
     campanha.adicionarBatalha(date, "Espartanos", "Persas");
     campanha.adicionarBatalha(date, "Romanos", "Germânicos");
-    campanha.adicionarBatalha(date, "Egípcios", "Assírios");
-    campanha.adicionarBatalha(date, "Espartanos", "Mongois");
+    campanha.adicionarBatalha(date, "Persas", "Assírios");
+    campanha.adicionarBatalha(date, "Espartanos", "Germânicos");
 
     campanha.simularBatalhas();
 

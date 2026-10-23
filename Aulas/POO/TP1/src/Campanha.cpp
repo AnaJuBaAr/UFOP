@@ -80,44 +80,48 @@ void Campanha :: gerarTabelaDePosicoes(int possibilidade){
 
         for(size_t j = 0; j < exercitos.size(); j++){
             if(exercitos[j]->getNome() == batalhas[i]->getExercitoA()->getNome()){
-                exercitos[j]->setVitorias(exercitos[j]->getVitorias() + batalhas[i]->getResultadoA());
+                exercitos[j]->setVitorias(exercitos[j]->getVitorias() + batalhas[i]->getExercitoA()->getVitorias());
                 existe = true;
                 break;
             }
         }
         if(!existe){
-            exercitos.push_back(batalhas[i]->getExercitoA());
+            Exercito* a = batalhas[i]->getExercitoA();
+            a->setVitorias(batalhas[i]->getExercitoA()->getVitorias());   // zera e já soma o resultado desta batalha
+            exercitos.push_back(a);
         }
 
         existe = false;
         for(size_t j = 0; j < exercitos.size(); j++){
             if(exercitos[j]->getNome() == batalhas[i]->getExercitoB()->getNome()){
-                exercitos[j]->setVitorias(exercitos[j]->getVitorias() + batalhas[i]->getResultadoB());
+                exercitos[j]->setVitorias(exercitos[j]->getVitorias() + batalhas[i]->getExercitoB()->getVitorias());
                 existe = true;
                 break;
             }
         }
         if(!existe){
-            exercitos.push_back(batalhas[i]->getExercitoB());
+            Exercito* b = batalhas[i]->getExercitoB();
+            b->setVitorias(batalhas[i]->getExercitoB()->getVitorias());
+            exercitos.push_back(b);
         }
     }
 
-    //ordena os exercitos em ordem crescente pelo numero de vitorias dentro do vetor de exercitos;
-    std::sort(exercitos.begin(), exercitos.end(), [](Exercito* a, Exercito *b){
+    //ordena os exercitos em ordem decrescente pelo numero de vitorias
+    std::sort(exercitos.begin(), exercitos.end(), [](Exercito* a, Exercito* b){
         return a->getVitorias() > b->getVitorias();
     });
 
     //imprimir na tela
     if(possibilidade == 1){
         for(size_t i = 0; i < exercitos.size(); i++){
-            std::cout << "Exercito " << exercitos[i]->getNome() << ". " << exercitos[i]->getResultado() << std::endl;;
+            std::cout << "Exercito " << exercitos[i]->getNome() << ". " << exercitos[i]->getVitorias() << std::endl;
         }
     }
     //salva em arquivo .txt
     else{
-        ofstream arquivo("tabela.txt");
+        std::ofstream arquivo("tabela.txt");
         for(size_t i = 0; i < exercitos.size(); i++){
-            arquivo << "Exercito " << exercitos[i]->getNome() << ". " << exercitos[i]->getResultado() << std::endl;
+            arquivo << "Exercito " << exercitos[i]->getNome() << ". " << exercitos[i]->getVitorias() << std::endl;
         }
         arquivo.close();
     }

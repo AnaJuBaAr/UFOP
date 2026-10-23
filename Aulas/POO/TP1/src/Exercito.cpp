@@ -110,8 +110,9 @@ std::string Exercito :: getResultado(){
 
 void Exercito :: imprimeUnidade(){
     for(size_t i = 0; i < unidades.size(); i++){
-        std::cout << "Unidade " << i+1 << std::endl;
+        std::cout << "Unidade " << unidades[i]->getTipo() << std::endl;
         std::cout << "Poder de ataque: " << unidades[i]->getPoderAtaque() << std::endl;
         std::cout << "Destruições: " << unidades[i]->getDestruicoes() << std::endl;
+        unidades[i]->printUnidade();
     }
 }

@@ -8,6 +8,7 @@
 
 #include <algorithm>
 #include <fstream>
+#include <map>
 
 /*              Campanha
  * ---------------------------------------
