@@ -29,24 +29,7 @@ int pitagoras(Cpu *cpu, Ram *ram, int hypotenuse, int cathetusA, int cathetusB);
 int pitagorasCathetus(Ram *ram, Cpu *cpu, int hypotenuse, int cathetus);
 int pitagorasHypothenuse(Ram *ram, Cpu *cpu, int cathetusA, int cathetusB);
 
-/*void random(Ram *ram, Cpu *cpu, int qtdInstruction){
-    Instruction *instruction = createInstruction(qtdInstruction);
-    int ramSize = 1000;
-    ram = createRandomRam(ramSize);
 
-    for(int i = 0; i < qtdInstruction-1; i++){
-        setInstruction(instruction, i, rand()%1000, rand()%1000, rand()%1000, rand()%2);
-    }
-
-    setInstruction(instruction, qtdInstruction-1, 0, 0, 0, -1);
-
-    cpu = createCpu();
-    setProgram(cpu, instruction);
-    initeCPU(cpu, ram);
-    destroyCpu(cpu);
-    destroyRam(ram);
-    destroyInstruction(instruction);
-}*/
 
 void sum(Cpu *cpu, Ram *ram, int add1, int add2){
     Instruction *instruction = createInstruction(2);
