@@ -1,11 +1,13 @@
-#ifndef COMPARISON_H
-#define COMPARISON_H
+#ifndef SUPPORT_H
+#define SUPPORT_H
 
 // INCLUDE DE BIBLIOTECAS PADRÃO //
 #include <stdio.h>
 
 // INCLUDE DE ARQUIVOS LOCAIS //
 #include "System.h"
+#include "Instructions.h"
+#include "Generator.h"
 
 // ====== TAG ====== //
 typedef struct{
@@ -19,6 +21,7 @@ typedef struct{
 // ============ FUNÇÕES ============ //
 void collectResult(System*, Result*);
 void printComparison(Result*, int);
+Instruction *loadProgram(const char*, int*);
 
 // ============ IMPLEMENTAÇÕES ============ //
 // guarda os numeros de um System ja executado (chamar depois do flushMemory)
@@ -54,6 +57,35 @@ void printComparison(Result *results, int n){
         printf("%-5d | %-15s | %6d | %6d | %8.2f%% | %5d | %12ld\n",
                i + 1, sizes, r->hits, r->misses, rate, r->ramAccesses, r->totalCost);
     }
+}
+
+Instruction *loadProgram(const char *path, int *count){
+    FILE *arq = fopen(path, "r");
+    if(arq == NULL){
+        printf("Erro ao abrir arquivo\n");
+        return NULL;
+    }
+
+    Instruction *program = initInstruction(QTD_INST+1);
+    int n = 0;
+    int op, t1, o1, t2, o2, t3, o3;
+
+    while(n < QTD_INST && (fscanf(arq, "%d:%d:%d:%d:%d:%d:%d", &op, &t1, &o1, &t2, &o2, &t3, &o3) == 7)){
+        Address add1 = {t1, o1};
+        Address add2 = {t2, o2};
+        Address add3 = {t3, o3};
+
+        setInstruction(program, n, add1, add2, add3, op);
+        n++;
+    }
+
+    fclose(arq);
+
+    Address halt = {0, 0};
+    setInstruction(program, n, halt, halt, halt, -1);
+
+    *count = n;
+    return program;
 }
 
 #endif

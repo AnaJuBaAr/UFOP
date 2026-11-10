@@ -4,7 +4,7 @@
 #include "System.h"
 #include "Mmu.h"
 #include "Cpu.h"
-#include "Comparison.h"
+#include "Support.h"
 
 #define TESTE1_C1 8
 #define TESTE1_C2 16
@@ -21,8 +21,6 @@
 #define TESTE5_C1 16
 #define TESTE5_C2 32
 #define TESTE5_C3 64
-
-Instruction *loadProgram(const char*, int*);
 
 int testes[15] = {8, 16, 32, 32, 64, 128, 16, 64, 256, 8, 32, 128, 16, 32, 64};
 
@@ -63,33 +61,4 @@ int main(){
     destroyInstruction(program);
 
     return 0;
-}
-
-Instruction *loadProgram(const char *path, int *count){
-    FILE *arq = fopen(path, "r");
-    if(arq == NULL){
-        printf("Erro ao abrir arquivo\n");
-        return NULL;
-    }
-
-    Instruction *program = initInstruction(QTD_INST+1);
-    int n = 0;
-    int op, t1, o1, t2, o2, t3, o3;
-
-    while(n < QTD_INST && (fscanf(arq, "%d:%d:%d:%d:%d:%d:%d", &op, &t1, &o1, &t2, &o2, &t3, &o3) == 7)){
-        Address add1 = {t1, o1};
-        Address add2 = {t2, o2};
-        Address add3 = {t3, o3};
-
-        setInstruction(program, n, add1, add2, add3, op);
-        n++;
-    }
-
-    fclose(arq);
-
-    Address halt = {0, 0};
-    setInstruction(program, n, halt, halt, halt, -1);
-
-    *count = n;
-    return program;
 }
