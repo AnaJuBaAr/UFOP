@@ -29,8 +29,9 @@ Exercito :: Exercito(std::string e_nome){
 Exercito :: ~Exercito(){
     for(size_t i = 0; i < unidades.size(); i++){
         delete unidades[i];
+        unidades[i] = nullptr;
     }
-    unidades.clear();
+    //unidades.clear();
 }
 
 std::string Exercito :: getNome() const{

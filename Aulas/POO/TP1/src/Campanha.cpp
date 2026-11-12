@@ -30,7 +30,64 @@ void Campanha :: setBatalhas(std::vector<Batalha*> e_batalhas){
     batalhas = e_batalhas;
 }
 
+// Adiciona uma batalha à campanha. Se os exercitos já existem, apenas adiciona a batalha. Se não, cria os exercitos e adiciona a batalha.
+// está ocorrendo um pproblema de double free detected in tcache 2
 void Campanha :: adicionarBatalha(Date date,std::string nomeA, std::string nomeB){
+
+    bool existeA = false;
+    int posicaoA = -1;
+    bool existeB = false;
+    int posicaoB = -1;
+
+    for(size_t i = 0; i < batalhas.size(); i++){
+        if(batalhas[i]->getExercitoA()->getNome() == nomeA){
+            existeA = true;
+            posicaoA = i;
+        }
+        if(batalhas[i]->getExercitoB()->getNome() == nomeB){
+            existeB = true;
+            posicaoB = i;
+        }
+    }
+    if(existeA && existeB){
+        Batalha *batalha = new Batalha(date, batalhas[posicaoA]->getExercitoA(), batalhas[posicaoB]->getExercitoB());
+        batalhas.push_back(batalha);
+        return;
+    }
+    if(existeA && !existeB){
+        Exercito* exercitoB = new Exercito(nomeB);
+        Infantaria* infantaria3 = new Infantaria;
+        Infantaria* infantaria4 = new Infantaria;
+        Veiculo* veiculo3 = new Veiculo;
+        Veiculo* veiculo4 = new Veiculo;
+        Aeronave* aeronave2 = new Aeronave;
+        exercitoB->adicionarUnidade(infantaria3);
+        exercitoB->adicionarUnidade(infantaria4);
+        exercitoB->adicionarUnidade(veiculo3);
+        exercitoB->adicionarUnidade(veiculo4);
+        exercitoB->adicionarUnidade(aeronave2);
+
+        Batalha *batalha = new Batalha(date, batalhas[posicaoA]->getExercitoA(), exercitoB);
+        batalhas.push_back(batalha);
+        return;
+    }
+    if(!existeA && existeB){
+        Exercito* exercitoA = new Exercito(nomeA);
+        Infantaria* infantaria1 = new Infantaria;
+        Infantaria* infantaria2 = new Infantaria;
+        Veiculo* veiculo1 = new Veiculo;
+        Veiculo* veiculo2 = new Veiculo;
+        Aeronave* aeronave1 = new Aeronave;
+        exercitoA->adicionarUnidade(infantaria1);
+        exercitoA->adicionarUnidade(infantaria2);
+        exercitoA->adicionarUnidade(veiculo1);
+        exercitoA->adicionarUnidade(veiculo2);
+        exercitoA->adicionarUnidade(aeronave1);
+
+        Batalha *batalha = new Batalha(date, exercitoA, batalhas[posicaoB]->getExercitoB());
+        batalhas.push_back(batalha);
+        return;
+    }
 
     Exercito* exercitoA = new Exercito(nomeA);
     Infantaria* infantaria1 = new Infantaria;

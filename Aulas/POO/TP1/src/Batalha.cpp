@@ -26,7 +26,10 @@ Batalha :: Batalha(Date e_data, Exercito* e_exercitoA, Exercito* e_exercitoB){
 
 Batalha :: ~Batalha(){
     delete exercitoA;
+    exercitoA = nullptr;
+
     delete exercitoB;
+    exercitoB = nullptr;
 }
 
 Date Batalha :: getData() const{
@@ -72,6 +75,7 @@ void Batalha :: ataqueExercitoA(){
     if(poderExercitoA > poderExercitoB){
         exercitoA->somaVitorias();
         exercitoA->somaDestruicaoUnidades();
+        setResultadoA(getResultadoA() + 1);
 
         exercitoB->somaDerrotas();
     }
@@ -79,6 +83,7 @@ void Batalha :: ataqueExercitoA(){
         exercitoA->somaDerrotas();
 
         exercitoB->somaVitorias();
+        setResultadoB(getResultadoB() + 1);
     }
     else{
         exercitoA->somaEmpates();
@@ -92,6 +97,7 @@ void Batalha :: ataqueExercitoB(){
     if(poderExercitoB > poderExercitoA){
         exercitoB->somaVitorias();
         exercitoB->somaDestruicaoUnidades();
+        setResultadoB(getResultadoB() + 1);
 
         exercitoA->somaDerrotas();
     }
@@ -99,6 +105,7 @@ void Batalha :: ataqueExercitoB(){
         exercitoB->somaDerrotas();
 
         exercitoA->somaVitorias();
+        setResultadoA(getResultadoA() + 1);
     }
     else{
         exercitoB->somaEmpates();
