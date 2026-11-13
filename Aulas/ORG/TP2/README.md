@@ -39,8 +39,7 @@ TP2/
 │   ├──Ram.h            # Simula as operações de criação e manipulação de uma RAM
 │   ├──Support.h        # Funções auxiliares para o funcionamento da main 
 │   └──System.h         # Simula um sistema de memória com uma RAM e três Caches
-└── 
-Makefile                # Arquivo Makefile com comandos convenientes para teste
+└── Makefile                # Arquivo Makefile com comandos convenientes para teste
 ```
 ### Cache `findCache`
 * Acha a linha do cache com o endereço desejado e retorna o índice da mesma.
